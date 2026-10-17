@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Lazy Luna Labs beeldmerk">
+  <style>
+    .m { fill: none; stroke: #6b5ca5; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .s { fill: none; stroke: #d39b2f; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    @media (prefers-color-scheme: dark) {
+      .m { stroke: #b3a6ec; }
+      .s { stroke: #f0c46a; }
+    }
+  </style>
+  <path class="m" d="M12.6 5.4A11.4 11.4 0 1 0 26.6 20.2A11.8 11.8 0 0 1 12.6 5.4Z"/>
+  <path class="s" d="M18.8 5.6Q19.8 8.6 22.8 9.6Q19.8 10.6 18.8 13.6Q17.8 10.6 14.8 9.6Q17.8 8.6 18.8 5.6Z"/>
+  <path class="s" d="M26.0 12.8V16.2M24.3 14.5H27.7"/>
+</svg>

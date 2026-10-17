@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BudgetMaxx: maximale rust in je portemonnee</title>
+<meta name="description" content="BudgetMaxx is een offline persoonlijke-financiën-app. Geen account, je gegevens blijven op je eigen computer.">
+<script>document.documentElement.classList.add("js")</script>
+<link rel="alternate" hreflang="nl" href="index.html">
+<link rel="alternate" hreflang="en" href="../../en/budgetmaxx/index.html">
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+.shot{aspect-ratio:16/10;border:2px dashed var(--line);border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--muted);background:var(--card);padding:10px}
+#thx{display:none;background:var(--soft);padding:16px;border-radius:10px}
+.hero{display:grid;gap:40px;grid-template-columns:1fr 1.15fr;align-items:center}
+@media (max-width:860px){.hero{grid-template-columns:1fr}}
+.devices{position:relative;padding:0 15% 30px 10px}
+.laptop{background:#1d2a26;border-radius:14px 14px 4px 4px;padding:10px 10px 12px;box-shadow:0 20px 50px rgba(0,0,0,.18)}
+.laptop img{display:block;width:100%;height:auto;border-radius:4px}
+.laptop:after{content:"";display:block;height:12px;margin:12px -10px 0;background:#c9d1cd;border-radius:0 0 14px 14px}
+.phone{position:absolute;right:0;bottom:0;width:20%;background:#1d2a26;border-radius:22px;padding:6px;box-shadow:0 14px 34px rgba(0,0,0,.28)}
+.phone img{display:block;width:100%;height:auto;aspect-ratio:780/1285;object-fit:cover;object-position:top;border-radius:17px}
+@media (max-width:600px){.devices{padding-right:6%}.phone{width:30%;border-radius:16px;padding:4px}.phone img{border-radius:12px}}
+/* probleem */
+.vs{display:grid;gap:16px;grid-template-columns:1fr 1fr;margin-top:18px}
+@media (max-width:720px){.vs{grid-template-columns:1fr}}
+.vs .card{position:relative}
+.vs h3{display:flex;align-items:center;gap:8px}
+.vs ul{list-style:none;margin:10px 0 0;padding:0}
+.vs li{padding:7px 0 7px 30px;position:relative;border-top:1px solid var(--line)}
+.vs li:before{position:absolute;left:0;top:7px;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700}
+.vs .old{border-style:dashed;background:transparent}.vs .old h3{color:var(--muted)}.vs .old li{color:var(--muted)}
+.vs .old li:before{content:"\2715";background:var(--line);color:var(--muted)}
+.vs .new{border:2px solid var(--brand)}.vs .new li:before{content:"\2713";background:var(--brand);color:var(--brand-t)}
+.tag{font-size:.75rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}.new .tag{color:var(--brand)}
+/* tijdlijn */
+.tl{list-style:none;margin:20px 0 0;padding:0 0 0 52px;position:relative;max-width:720px}
+.tl:before{content:"";position:absolute;left:17px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.tl li{position:relative;margin-bottom:24px}
+.tl li:last-child{margin-bottom:0}
+.tl .num{position:absolute;left:-52px;top:0;margin:0}
+.js .tl li{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.js .tl li.in{opacity:1;transform:none}
+.stats{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-top:32px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.stat b{display:block;font-size:1.4rem;line-height:1.2}
+.stat span{color:var(--muted);font-size:.9rem}
+/* scrollytelling */
+.story{margin-top:20px}
+.tabs{display:none}
+.step{padding:8px 0 32px}
+.step .ph{margin:12px 0 0}
+.shotf{margin:0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px}
+.shotf img{display:block;width:100%;height:auto;border-radius:6px}
+.shotf.tel{max-width:240px;margin-top:12px}
+.step .k{font-size:.8rem;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.05em}
+.stage{display:none}
+@media (min-width:960px){
+.js .story{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:48px;align-items:start}
+.js .step{min-height:78vh;display:flex;flex-direction:column;justify-content:center;opacity:.45;transition:opacity .5s ease}
+.js .step.on{opacity:1}
+.js .step .ph{display:none}
+.js .stage{display:block;position:sticky;top:128px;order:2}
+.js .steps{order:1}
+.js .tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.tabs button{font:inherit;font-size:.85rem;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--brand);color:var(--brand-t);border-color:var(--brand)}
+.tabs button:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+.bframe{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.14)}
+.bbar{display:flex;gap:6px;align-items:center;padding:9px 12px;border-bottom:1px solid var(--line);background:var(--soft)}
+.bbar i{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.bbar span{margin-left:8px;font-size:.78rem;color:var(--muted)}
+.bview{position:relative;aspect-ratio:1440/900}
+.bview img{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .7s ease}
+.bview img.on{opacity:1}
+.pframe{position:absolute;right:-14px;bottom:-34px;width:23%;background:#1d2a26;border-radius:22px;padding:5px;box-shadow:0 14px 34px rgba(0,0,0,.3);opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease;pointer-events:none}
+.pframe.on{opacity:1;transform:none}
+.pview{position:relative;aspect-ratio:780/1688;border-radius:17px;overflow:hidden}
+.pview img{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .6s ease}
+.pview img.on{opacity:1}
+.stagewrap{position:relative;padding-bottom:36px}
+}
+@media (prefers-reduced-motion:reduce){
+*,*:before,*:after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+.js .tl li{opacity:1;transform:none}
+}
+.consent{display:flex;gap:10px;align-items:flex-start;font-weight:400;margin:4px 0 14px}
+.consent input{flex:none;width:22px;height:22px;margin-top:2px;accent-color:var(--brand)}
+.consent input:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+.fine{font-size:.9rem;color:var(--muted)}
+</style>
+<script src="../../assets/sterren.js" defer></script>
+<link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+</head>
+<body class="in-budgetmaxx">
+<a class="skip" href="#main">Direct naar hoofdinhoud</a>
+<header class="site-header">
+<div class="w topbar">
+<a class="logo" href="../index.html"><svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><path class="lm" d="M12.6 5.4A11.4 11.4 0 1 0 26.6 20.2A11.8 11.8 0 0 1 12.6 5.4Z"/><path class="ls" d="M19.4 5.4Q20.6 8.8 24.0 10.0Q20.6 11.2 19.4 14.6Q18.2 11.2 14.8 10.0Q18.2 8.8 19.4 5.4Z"/><path class="ls lp" d="M26.0 12.8V16.2M24.3 14.5H27.7"/></svg>Lazy Luna Labs</a>
+<nav class="main-nav" aria-label="Hoofdmenu"><a href="../index.html">Home</a><a href="index.html" aria-current="page">BudgetMaxx</a><a href="../index.html#over">Over</a><a href="../index.html#contact">Contact</a></nav>
+<span class="lang"><b aria-current="true">NL</b> | <a href="../../en/budgetmaxx/index.html" hreflang="en" lang="en" title="English">EN</a></span>
+</div>
+<div class="subbar"><div class="w subbar-inner">
+<div class="crumb" role="navigation" aria-label="Broodkruimelpad"><a href="../index.html">Lazy Luna Labs</a><span aria-hidden="true">&rsaquo;</span><strong>BudgetMaxx</strong></div>
+<nav class="sub-nav" aria-label="BudgetMaxx-menu">
+<a href="index.html" aria-current="page">Overzicht</a>
+<a href="index.html#story">Rondleiding</a>
+<a href="over.html">Gemaakt door Luna</a>
+<a href="privacy.html">Privacy</a>
+<a href="offline.html">Bewijs offline</a>
+<a class="sub-cta" href="index.html#beta">Word beta-tester</a>
+</nav>
+</div></div>
+</header>
+<main id="main">
+<section class="top"><div class="w hero"><div>
+<span class="badge">Binnenkort: gratis beta</span>
+<h1>Maximale rust in je portemonnee.</h1>
+<!-- EN (later): "Maximum calmness in your wallet." -->
+<p class="muted" style="font-size:1.15rem;max-width:620px">BudgetMaxx maakt van jouw inkomen, vaste lasten en wensen een helder plan per salarisperiode. Zonder account, zonder cloud: je geld blijft op jouw computer.</p>
+<p><a class="btn" href="#beta">Word beta-tester</a></p>
+</div>
+<div class="devices">
+<div class="laptop"><img src="img/hero-dashboard.png" width="1100" height="520" alt="Uitsnede van het BudgetMaxx-dashboard van demoprofiel Max: inkomsten, uitgaven, lening en leefgeld in één overzicht"></div>
+<div class="phone"><img src="img/hero-telefoon-jouwdag.png" width="780" height="1285" alt="De pop-up Jouw dag op een telefoon: wat er vandaag binnenkomt en wat eraf gaat"></div>
+</div>
+</div></section>
+
+<section class="alt"><div class="w">
+<h2>Het probleem</h2>
+<p>Je bankapp laat zien wat je saldo is, maar niet wat je daarmee kunt. BudgetMaxx draait het om: een plan vooraf, in plaats van achteraf turven.</p>
+<div class="vs">
+<div class="card old"><span class="tag">Achteraf turven</span><h3>Kijken wat er al weg is</h3>
+<ul><li>Je saldo, zonder te weten wat je ermee kunt</li><li>Een oud Excel-bestand dat niemand meer begrijpt</li><li>Elke maand opnieuw tijd kwijt</li><li>Veel apps vragen om een account of bankkoppeling</li></ul></div>
+<div class="card new"><span class="tag">Vooraf plannen</span><h3>Weten wat je mag uitgeven</h3>
+<ul><li>Je salaris vooraf verdeeld over je periode</li><li>Eén overzicht van wat er nog betaald moet worden</li><li>Een dagbudget uit je pot</li><li>Geen account, geen cloud, geen bankkoppeling</li></ul></div>
+</div>
+</div></section>
+
+<section><div class="w">
+<h2>Hoe het werkt</h2>
+<ol class="tl" id="tl">
+<li><div class="num" aria-hidden="true">1</div><h3>Vul het fundament in</h3><p class="muted">Een korte wizard: inkomen, vaste lasten, spaarpotten, leningen.</p></li>
+<li><div class="num" aria-hidden="true">2</div><h3>Volg je maand</h3><p class="muted">Het maandoverzicht volgt je salarisperiode. Vink af wat betaald is.</p></li>
+<li><div class="num" aria-hidden="true">3</div><h3>Weet wat je mag uitgeven</h3><p class="muted">De Budgetcoach rekent een dagbudget uit je pot.</p></li>
+</ol>
+<p class="muted" style="margin-top:32px">Zo ziet dat eruit voor demoprofiel Max (verzonnen bedragen, uit de screenshots hieronder):</p>
+<div class="stats" style="margin-top:12px">
+<div class="stat"><b>&euro; 2.900,-</b><span>inkomsten per maand</span></div>
+<div class="stat"><b>&euro; 46,77</b><span>resterend vandaag</span></div>
+<div class="stat"><b>&euro; 664,83</b><span>balans oktober</span></div>
+<div class="stat"><b>&euro; 7.400,-</b><span>nog open op de studielening</span></div>
+</div>
+</div></section>
+
+<section class="alt"><div class="w">
+<h2>Wat zit erin</h2>
+<div class="grid">
+<div class="card"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4M8 14l2 2 4-4"/></svg><h3>Maandoverzicht</h3><p class="muted">Per salarisperiode, met afvinken.</p></div>
+<div class="card"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><h3>Dashboard en jaaroverzicht</h3><p class="muted">Zie waar je geld heen gaat en hoe het jaar eruitziet.</p></div>
+<div class="card"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6M5 10v9M19 10v9M9 10v9M15 10v9M3 21h18"/></svg><h3>Leningen en hypotheek</h3><p class="muted">Inclusief extra aflossen.</p></div>
+<div class="card"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 11a7 6 0 1 0-12.5 3.7L6 19h3l.5-1.5h5L15 19h3l.5-3A6 6 0 0 0 19 11z"/><circle cx="15" cy="10" r=".6"/><path d="M11 6.5h3"/></svg><h3>Spaarpotten</h3><p class="muted">Reserveringen voor wat eraan komt.</p></div>
+<div class="card"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><h3>Budgetcoach</h3><p class="muted">Een dagbudget uit een slinkende pot, met pop-up "Jouw dag".</p></div>
+<div class="card"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5-9 5-9-5 9-5zM3 12l9 5 9-5M3 17l9 5 9-5"/></svg><h3>Afschrijvingen en uren</h3><p class="muted">Handig voor wie zelfstandig werkt.</p></div>
+<div class="card"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 12v6M9 15l3 3 3-3"/></svg><h3>PDF-maandoverzicht</h3><p class="muted">Bewaar of print je maand.</p></div>
+<div class="card"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M8 6h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 18.5h.01M12 18.5h.01M16 18.5h.01"/></svg><h3>Rekenmachine</h3><p class="muted">Snel iets narekenen, zonder de app te verlaten.</p></div>
+</div></div></section>
+
+<section><div class="w">
+<h2>Privacy: werkt zonder internet</h2>
+<div class="card illu">
+<svg width="120" height="120" viewBox="0 0 120 120" aria-hidden="true" style="flex:none"><circle cx="60" cy="60" r="56" fill="var(--soft)"/><path d="M30 62 60 36l30 26v28H30z" fill="var(--card)" stroke="var(--brand)" stroke-width="3" stroke-linejoin="round"/><path d="M60 54l12 5v9c0 8-5 13-12 16-7-3-12-8-12-16v-9z" fill="var(--brand)"/><path d="M54 68l4 4 8-8" fill="none" stroke="var(--brand-t)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div>
+<p><b>Geen account. Geen cloud. Geen bankkoppeling.</b></p>
+<p class="muted">BudgetMaxx is één HTML-bestand dat in je browser draait, ook zonder internet. Je gegevens staan lokaal op jouw computer en kunnen optioneel worden versleuteld. Deze pagina laadt zelf ook niets van buiten.</p>
+<p><b>Je geld blijft thuis. Max ook.</b></p>
+<p class="muted">Let op: omdat alles lokaal staat, maak je zelf back-ups. De app helpt je daarbij.</p>
+</div></div></div></section>
+
+<section class="alt"><div class="w">
+<h2>Eerlijk over AI</h2>
+<div class="illu">
+<svg width="120" height="120" viewBox="0 0 120 120" aria-hidden="true" style="flex:none"><circle cx="60" cy="60" r="56" fill="var(--card)"/><circle cx="46" cy="50" r="12" fill="none" stroke="var(--brand)" stroke-width="3"/><path d="M26 88c2-13 10-20 20-20s18 7 20 20" fill="none" stroke="var(--brand)" stroke-width="3" stroke-linecap="round"/><path d="M82 30l3 8 8 3-8 3-3 8-3-8-8-3 8-3zM90 60l2 4.5 4.5 2-4.5 2-2 4.5-2-4.5-4.5-2 4.5-2z" fill="var(--brand)"/></svg>
+<div>
+<p>BudgetMaxx is gebouwd door Luna, met hulp van AI-agents. We winden er geen doekjes om.</p>
+<p class="muted">De app zelf gebruikt geen AI en geen internet. Je gegevens gaan nergens heen.</p>
+</div></div>
+</div></section>
+
+<section class="alt"><div class="w">
+<h2>Zo ziet het eruit</h2>
+<p class="muted">Schermafbeeldingen met het fictieve demoprofiel "Max". Alle bedragen zijn verzonnen. Scroll door de zes schermen, of klik een tab.</p>
+<div class="story" id="story">
+<div class="steps">
+<article class="step on" data-i="0" id="stap1"><span class="k">Stap 1 van 6</span><h3>Home / Dashboard</h3><p class="muted">Je hele maand in één oogopslag: inkomsten (&euro; 2.900,-), uitgaven, de openstaande lening en wat je vandaag nog mag besteden, plus een tijdlijn van de geplande betalingen.</p><figure class="shotf ph"><img src="img/dashboard.png" width="1440" height="900" loading="lazy" alt="Dashboard met inkomsten, uitgaven, openstaande lening en leefgeld van demoprofiel Max"></figure><figure class="shotf ph tel"><img src="img/telefoon-dashboard.png" width="780" height="1688" loading="lazy" alt="Het dashboard op een telefoonscherm"></figure></article>
+<article class="step" data-i="1" id="stap2"><span class="k">Stap 2 van 6</span><h3>Deze maand</h3><p class="muted">Per salarisperiode vink je af wat binnen is en wat betaald is. Max ziet direct dat er nog &euro; 2.235,17 op de rekening moet staan voor de open posten.</p><figure class="shotf ph"><img src="img/maand.png" width="1440" height="900" loading="lazy" alt="Maandoverzicht oktober met salaris, huur en vaste lasten om af te vinken"></figure></article>
+<article class="step" data-i="2" id="stap3"><span class="k">Stap 3 van 6</span><h3>Budgetcoach</h3><p class="muted">De Budgetcoach rekent een dagbudget uit je pot: &euro; 46,77 resterend vandaag en &euro; 327,42 per 7 dagen, tot het volgende salaris.</p><figure class="shotf ph"><img src="img/budgetcoach.png" width="1440" height="900" loading="lazy" alt="Budgetcoach met resterend vandaag &euro; 46,77 en &euro; 327,42 per 7 dagen"></figure></article>
+<article class="step" data-i="3" id="stap4"><span class="k">Stap 4 van 6</span><h3>Jouw dag</h3><p class="muted">Een pop-up met wat er vandaag binnenkomt (&euro; 2.900,-) en wat eraf gaat (10 posten, samen &euro; 1.766,-), met een knop om meteen af te vinken.</p><figure class="shotf ph"><img src="img/jouwdag.png" width="1440" height="900" loading="lazy" alt="Pop-up Jouw dag met wat er vandaag binnenkomt en wat eraf gaat"></figure><figure class="shotf ph tel"><img src="img/telefoon-jouwdag.png" width="780" height="1688" loading="lazy" alt="De pop-up Jouw dag op een telefoonscherm"></figure></article>
+<article class="step" data-i="4" id="stap5"><span class="k">Stap 5 van 6</span><h3>Leningen</h3><p class="muted">Een studielening met &euro; 7.400,- nog open, 2,5% rente en een verwachte einddatum: schuldenvrij in april 2032. Met ruimte om extra af te lossen.</p><figure class="shotf ph"><img src="img/leningen.png" width="1440" height="900" loading="lazy" alt="Leningenpagina met een studielening van &euro; 7.400,-, schuldenvrij in april 2032"></figure></article>
+<article class="step" data-i="5" id="stap6"><span class="k">Stap 6 van 6</span><h3>Jaaroverzicht</h3><p class="muted">Het hele jaar als overzichtelijke tabel, met alle posten per maand. Bovenaan staan knoppen voor PDF en Excel (CSV).</p><figure class="shotf ph"><img src="img/jaaroverzicht.png" width="1440" height="900" loading="lazy" alt="Jaaroverzicht als spreadsheet met alle posten per maand"></figure></article>
+</div>
+<div class="stage" aria-hidden="false"><div class="stagewrap">
+<div class="tabs" role="tablist" aria-label="Schermen"><button type="button" role="tab" aria-selected="true" data-go="0">Home</button><button type="button" role="tab" aria-selected="false" data-go="1">Deze maand</button><button type="button" role="tab" aria-selected="false" data-go="2">Budgetcoach</button><button type="button" role="tab" aria-selected="false" data-go="3">Jouw dag</button><button type="button" role="tab" aria-selected="false" data-go="4">Leningen</button><button type="button" role="tab" aria-selected="false" data-go="5">Jaaroverzicht</button></div>
+<div class="bframe"><div class="bbar"><i></i><i></i><i></i><span>BudgetMaxx</span></div><div class="bview"><img src="img/dashboard.png" width="1440" height="900" alt="Dashboard met inkomsten, uitgaven, openstaande lening en leefgeld van demoprofiel Max" data-s="0" class="on"><img src="img/maand.png" width="1440" height="900" loading="lazy" alt="Maandoverzicht oktober met salaris, huur en vaste lasten om af te vinken" data-s="1"><img src="img/budgetcoach.png" width="1440" height="900" loading="lazy" alt="Budgetcoach met resterend vandaag &euro; 46,77 en &euro; 327,42 per 7 dagen" data-s="2"><img src="img/jouwdag.png" width="1440" height="900" loading="lazy" alt="Pop-up Jouw dag met wat er vandaag binnenkomt en wat eraf gaat" data-s="3"><img src="img/leningen.png" width="1440" height="900" loading="lazy" alt="Leningenpagina met een studielening van &euro; 7.400,-, schuldenvrij in april 2032" data-s="4"><img src="img/jaaroverzicht.png" width="1440" height="900" loading="lazy" alt="Jaaroverzicht als spreadsheet met alle posten per maand" data-s="5"></div></div>
+<div class="pframe" id="pf"><div class="pview"><img src="img/telefoon-dashboard.png" width="780" height="1688" loading="lazy" alt="Het dashboard op een telefoonscherm" data-s="0" class="on"><img src="img/telefoon-jouwdag.png" width="780" height="1688" loading="lazy" alt="De pop-up Jouw dag op een telefoonscherm" data-s="3"></div></div>
+</div></div>
+</div>
+</div></section>
+
+<section class="alt"><div class="w">
+<h2>Gratis en open-source</h2>
+<p>BudgetMaxx is gratis, zonder abonnement, zonder Pro-versie en zonder reclame. De code is openbaar: iedereen kan meekijken.</p>
+<p class="muted">Helpt Max je? Een donatie is welkom, maar nooit verplicht.</p>
+<div class="row">
+<!-- PayPal-link nog invullen -->
+<a class="btn" href="#">Trakteer Max via PayPal</a>
+<!-- repo-URL nog invullen -->
+<a class="btn btn2" href="#">Bekijk de code</a>
+</div>
+</div></section>
+
+<section><div class="w">
+<h2>Veelgestelde vragen</h2>
+<details><summary>Heb ik een account nodig?</summary><p>Nee. Er is geen account, en geen server waar jouw gegevens heen gaan.</p></details>
+<details><summary>Wat kost het?</summary><p>Niets. BudgetMaxx is gratis. Wil je iets terugdoen, dan mag je doneren, maar dat hoeft niet.</p></details>
+<details><summary>Is het open-source?</summary><p>Ja. De code is openbaar, zodat iedereen kan zien wat de app doet.</p></details>
+<details><summary>Gebruikt de app AI?</summary><p>Nee. De app is gebouwd met hulp van AI-agents, maar de app zelf gebruikt geen AI en maakt geen verbinding met internet.</p></details>
+<details><summary>Waar blijven mijn gegevens?</summary><p>Op jouw eigen computer, in je browser. Ze gaan nergens heen. Je kunt ze optioneel versleutelen.</p></details>
+<details><summary>Werkt het zonder internet?</summary><p>Ja. Het is één HTML-bestand dat offline werkt.</p></details>
+<details><summary>Wat als ik mijn computer kwijtraak?</summary><p>Maak regelmatig een back-up. Zonder back-up kunnen gegevens niet worden hersteld, omdat wij ze niet hebben.</p></details>
+<details><summary>Is er een Engelse versie?</summary><p>Die komt vóór de beta. De datum is nog niet vastgesteld.</p></details>
+<details><summary>Is dit financieel advies?</summary><p>Nee. BudgetMaxx is een rekenhulp om overzicht te krijgen.</p></details>
+</div></section>
+
+<section id="beta" class="alt"><div class="w">
+<h2>Word beta-tester</h2>
+<p class="muted">De beta komt de komende week. Laat je e-mailadres achter en we nemen contact op.</p>
+<!-- TODO: koppeling voor aanmeldingen nog te kiezen (formulier-tool of e-mail). Dit formulier verstuurt nu NIETS. -->
+<form id="f">
+<label for="n">Voornaam</label><input id="n" type="text" autocomplete="given-name">
+<label for="e">E-mailadres</label><input id="e" type="email" required autocomplete="email">
+<label class="consent" for="c"><input id="c" type="checkbox" required><span>Ik geef toestemming om mijn voornaam en e-mailadres te gebruiken voor de beta. Lees de <a href="privacy.html">privacyverklaring</a>.</span></label>
+<p class="fine">E-mailadressen worden 3 maanden na de lancering gewist. De app zelf verstuurt nooit iets.</p>
+<button class="btn" type="submit">Aanmelden</button>
+</form>
+<p id="thx" role="status">Bedankt! Dit is een prototype: er is nog niets verstuurd.</p>
+</div></section>
+</main>
+<footer class="site-footer"><div class="w">
+<div>Lazy Luna Labs · KvK 89453980 · <a href="mailto:hello@lazylunalabs.com">hello@lazylunalabs.com</a> · <a href="privacy.html">Privacy</a></div>
+<div class="footer-sub">BudgetMaxx is een product van Lazy Luna Labs · open-source onder GPL-3.0</div>
+</div></footer>
+<script>
+document.getElementById('f').addEventListener('submit',function(ev){ev.preventDefault();this.style.display='none';document.getElementById('thx').style.display='block';});
+(function(){
+var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+var steps=[].slice.call(document.querySelectorAll('.step'));
+var tabs=[].slice.call(document.querySelectorAll('.tabs button'));
+var sImgs=[].slice.call(document.querySelectorAll('.stage [data-s]'));
+var pf=document.getElementById('pf');
+function show(i){
+ steps.forEach(function(e,k){e.classList.toggle('on',k===i)});
+ tabs.forEach(function(b,k){b.setAttribute('aria-selected',k===i?'true':'false')});
+ var hasP=false;
+ sImgs.forEach(function(im){var on=+im.getAttribute('data-s')===i;im.classList.toggle('on',on);if(on&&im.closest('.pview'))hasP=true});
+ if(pf)pf.classList.toggle('on',hasP);
+}
+tabs.forEach(function(b){b.addEventListener('click',function(){
+ var i=+b.getAttribute('data-go');show(i);
+ steps[i].scrollIntoView({behavior:rm?'auto':'smooth',block:'center'});
+})});
+if('IntersectionObserver' in window){
+ var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)show(steps.indexOf(e.target))})},{rootMargin:'-45% 0px -45% 0px'});
+ steps.forEach(function(e){io.observe(e)});
+ var tl=document.querySelectorAll('.tl li');
+ var io2=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io2.unobserve(e.target)}})},{threshold:.3});
+ [].forEach.call(tl,function(e){io2.observe(e)});
+}else{[].forEach.call(document.querySelectorAll('.tl li'),function(e){e.classList.add('in')})}
+show(0);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+@font-face{font-family:'Fraunces';font-style:normal;font-weight:100 900;font-display:swap;src:url(fonts/Fraunces-e0ad8e.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Nunito Sans';font-style:normal;font-weight:200 1000;font-display:swap;src:url(fonts/NunitoSans-9ad6ba.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+/* Lazy Luna Labs: gedeelde stijl voor alle pagina's (offline, geen externe bronnen).
+   Paginaspecifieke stijl blijft in een klein <style>-blok op de pagina zelf. */
+:root{--bg:#f8f7f4;--card:#fff;--text:#1f2a2e;--muted:#5d6a6e;--brand:#1f6f5c;--brand-t:#fff;--line:#e0e3df;--soft:#ece9f5;--acc:#6b5ca5;
+ /* de kopbalk gebruikt deze vaste waarden, zodat hij overal identiek blijft (ook binnen BudgetMaxx) */
+ --hbg:var(--bg);--hline:var(--line);--htext:var(--text)}
+@media (prefers-color-scheme:dark){:root{--bg:#131817;--card:#1b2321;--text:#e8edea;--muted:#a0b0aa;--brand:#4fb89b;--brand-t:#0c1512;--line:#2c3835;--soft:#232035;--acc:#b3a6ec}}
+/* BudgetMaxx: eigen muntgroene sfeer binnen dezelfde site */
+body.in-budgetmaxx{--bg:#f7f8f6;--card:#fff;--text:#1d2a26;--muted:#5a6a64;--line:#dde3df;--soft:#e8f1ed}
+@media (prefers-color-scheme:dark){body.in-budgetmaxx{--bg:#121816;--card:#1a2320;--text:#e6ede9;--muted:#9fb0a8;--line:#2b3834;--soft:#1d2b26}}
+
+*{box-sizing:border-box}
+html{scroll-padding-top:130px;scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;font:17px/1.6 'Nunito Sans',system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--text)}
+.w{max-width:1120px;margin:0 auto;padding:0 20px}
+section{padding:52px 0}
+h1{font-size:clamp(2rem,6.5vw,3.3rem);line-height:1.12;margin:0 0 16px}
+h2{font-size:clamp(1.5rem,4vw,2rem);margin:0 0 14px}
+h3{margin:0 0 6px;font-size:1.1rem}
+h1,h2,h3,p,li,summary,td{overflow-wrap:anywhere}
+p{margin:0 0 12px}.muted{color:var(--muted)}
+a{color:var(--brand)}
+img{max-width:100%}
+
+/* knoppen, focus, skip-link */
+.btn{display:inline-block;background:var(--brand);color:var(--brand-t);padding:13px 24px;border-radius:12px;text-decoration:none;font-weight:600;border:0;font-size:1rem;cursor:pointer}
+.btn2{background:transparent;color:var(--brand);border:2px solid var(--brand);padding:11px 22px}
+:is(a,button,input,summary):focus-visible{outline:3px solid var(--brand);outline-offset:2px;border-radius:4px}
+.skip{position:absolute;left:12px;top:-60px;background:var(--brand);color:var(--brand-t);padding:10px 16px;border-radius:0 0 10px 10px;z-index:100;text-decoration:none;font-weight:600}
+.skip:focus{top:0}
+
+/* NIVEAU 1: kopbalk van Lazy Luna Labs, op elke pagina identiek */
+.site-header{position:sticky;top:0;z-index:40;background:var(--hbg);border-bottom:1px solid var(--hline)}
+.topbar{display:flex;align-items:center;gap:6px 16px;padding-top:10px;padding-bottom:10px}
+.logo{display:inline-flex;align-items:center;gap:8px;font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 100,'WONK' 0;font-weight:600;font-size:1.2rem;color:var(--htext);text-decoration:none;white-space:nowrap}
+.logo svg{flex:none}
+.lm,.ls{stroke-linecap:round;stroke-linejoin:round}
+.lm{fill:#6b5ca5;stroke:#6b5ca5;stroke-width:1.8}.ls{fill:#d39b2f;stroke:#d39b2f;stroke-width:1.4}
+@media (prefers-color-scheme:dark){.lm{fill:#b3a6ec;stroke:#b3a6ec}.ls{fill:#f0c46a;stroke:#f0c46a}}
+.in-budgetmaxx .ls{fill:#1f6f5c;stroke:#1f6f5c}
+@media (prefers-color-scheme:dark){.in-budgetmaxx .ls{fill:#4fb89b;stroke:#4fb89b}}
+.main-nav{display:flex;gap:2px 18px;align-items:center;margin-left:auto}
+.main-nav a{color:var(--htext);text-decoration:none;font-weight:600;padding:6px 2px;border-bottom:2px solid transparent}
+.main-nav a:hover{border-bottom-color:var(--hline)}
+.main-nav a[aria-current]{color:var(--brand);border-bottom-color:var(--brand)}
+.lang{font-size:.9rem;border:1px solid var(--hline);border-radius:99px;padding:3px 12px;white-space:nowrap;color:var(--htext)}
+.lang b{color:var(--brand)}
+.lang a{font-weight:600;color:var(--htext);text-decoration:none}
+
+/* NIVEAU 2: BudgetMaxx-balk (broodkruimel + subtabs) */
+.subbar{background:var(--soft);border-top:1px solid var(--hline)}
+.subbar-inner{display:flex;align-items:center;gap:4px 20px}
+.crumb{display:inline-flex;align-items:center;gap:6px;padding:8px 0;white-space:nowrap;font-size:.9rem;color:var(--muted);flex:none}
+.crumb a{color:var(--muted);text-decoration:none}
+.crumb a:hover{color:var(--text);text-decoration:underline}
+.crumb strong{color:var(--brand)}
+.sub-nav{display:flex;align-items:center;gap:4px 6px;margin-left:auto;min-width:0;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding:6px 2px}
+.sub-nav::-webkit-scrollbar{display:none}
+.sub-nav a{flex:none;white-space:nowrap;color:var(--text);text-decoration:none;font-weight:500;font-size:.94rem;padding:5px 11px;border-radius:99px;border:1px solid transparent}
+.sub-nav a:hover{background:var(--card)}
+.sub-nav a[aria-current]{background:var(--brand);color:var(--brand-t);font-weight:600}
+.sub-nav a.sub-cta{border-color:var(--brand);color:var(--brand);font-weight:600}
+.sub-nav a.sub-cta:hover{background:var(--card)}
+
+@media (max-width:760px){
+.w{padding:0 16px}
+.site-header{position:static}  /* drie rijen hoog: op telefoon niet vastplakken */
+.topbar{flex-wrap:wrap;padding-top:10px;padding-bottom:6px}
+.logo{order:1}
+.lang{order:2;margin-left:auto}
+.main-nav{order:3;width:100%;margin-left:0;justify-content:space-between;gap:0 6px;border-top:1px solid var(--hline)}
+.main-nav a{padding:8px 2px;font-size:.98rem}
+.subbar-inner{flex-direction:column;align-items:stretch;gap:0}
+.crumb{padding:6px 0 0;font-size:.85rem}
+.sub-nav{margin-left:0;padding:4px 16px 8px 0;-webkit-mask-image:linear-gradient(to right,#000 88%,transparent);mask-image:linear-gradient(to right,#000 88%,transparent)}
+}
+
+/* gedeelde onderdelen */
+.badge{display:inline-block;background:var(--soft);color:var(--acc);padding:4px 12px;border-radius:99px;font-size:.85rem;margin-bottom:16px;font-weight:600}
+.in-budgetmaxx .badge{color:var(--brand)}
+.lead{font-size:1.15rem;max-width:640px}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.card svg{color:var(--brand);margin-bottom:8px}
+.alt{background:var(--soft)}
+.slogan{font-size:1.3rem;font-weight:700;color:var(--brand);margin:0 0 10px}
+.ph{border:2px dashed var(--line);border-radius:14px;padding:16px;background:var(--card)}
+.ph b.t{display:inline-block;background:var(--soft);color:var(--acc);border-radius:6px;padding:1px 8px;font-size:.8rem;margin-bottom:6px}
+section.top{padding:28px 0 48px}
+.row{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+.photo{aspect-ratio:1;max-width:260px;border:2px dashed var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted);background:var(--card)}
+.ico{color:var(--brand);flex:none}
+.card .ico{margin-bottom:8px}
+.illu{display:flex;gap:24px;align-items:center}
+@media (max-width:600px){.illu{flex-direction:column;align-items:flex-start}}
+.num{width:36px;height:36px;border-radius:50%;background:var(--brand);color:var(--brand-t);display:flex;align-items:center;justify-content:center;font-weight:700;margin-bottom:10px}
+.doc{max-width:760px}.doc h2{margin-top:32px}.doc li{margin-bottom:8px}.doc ol,.doc ul{padding-left:1.3em}
+.warn{background:var(--soft);border:2px solid var(--brand);border-radius:12px;padding:14px 18px;margin-bottom:24px}
+details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:10px}
+summary{cursor:pointer;font-weight:600}
+details p{margin:10px 0 0}
+label{display:block;font-weight:600;margin-bottom:6px}
+input[type=email],input[type=text]{width:100%;padding:12px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit;margin-bottom:14px}
+form{max-width:480px}
+
+/* footer */
+.site-footer{padding:28px 0;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+.site-footer a{color:inherit}
+.footer-sub{margin-top:6px;font-size:.85rem}
+
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* vloeiende overgang tussen pagina's (alleen browsers die dit kennen; geen script) */
+@view-transition{navigation:auto}
+@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
+
+.lp{fill:none!important;stroke-width:1.8}
+
+/* Lettertypes: Fraunces voor woordmerk en koppen, Nunito Sans voor de rest */
+h1,h2,h3,.card h3,.logo{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 100,'WONK' 0;font-weight:600}
+button,input,textarea,select{font-family:inherit}

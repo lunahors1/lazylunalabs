@@ -120,3 +120,10 @@ form{max-width:480px}
 /* Lettertypes: Fraunces voor woordmerk en koppen, Nunito Sans voor de rest */
 h1,h2,h3,.card h3,.logo{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 100,'WONK' 0;font-weight:600}
 button,input,textarea,select{font-family:inherit}
+/* Waar we voor staan: geen kaarten, subtiele scheidingen (Luna, 18 okt) */
+.values{display:grid;grid-template-columns:repeat(4,1fr);margin-top:8px}
+.values>div{padding:4px 28px;border-left:1px solid var(--line)}
+.values>div:first-child{padding-left:0;border-left:0}
+.values svg{color:var(--brand);margin-bottom:8px}
+@media (max-width:900px){.values{grid-template-columns:1fr 1fr;row-gap:28px}.values>div:nth-child(odd){padding-left:0;border-left:0}}
+@media (max-width:560px){.values{grid-template-columns:1fr;row-gap:0}.values>div{padding:18px 0;border-left:0;border-top:1px solid var(--line)}.values>div:first-child{border-top:0;padding-top:0}}

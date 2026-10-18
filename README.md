@@ -45,3 +45,9 @@ Geen externe fonts (de lettertypes staan lokaal, zie onder), scripts of CDN; all
 
 ## Lettertypes
 Fraunces (variabel, `'SOFT' 100,'WONK' 0`, gewicht 600) voor woordmerk en koppen h1-h3; Nunito Sans (variabel) voor alle andere tekst, fallback system-ui. Licentie OFL. Bestanden in `assets/fonts/` (`Fraunces-e0ad8e.woff2` 120 kB, `NunitoSans-9ad6ba.woff2` 32 kB, samen ca. 152 kB, alleen Latijn); `@font-face` met `font-display:swap` bovenaan `assets/site.css`, en inline op de taalkeuzepagina (`index.html`).
+
+## Logo-overgang (Luna, 18 okt)
+- Homepage (nl/en): groot Lazy Luna Labs-logo bovenaan de hero; BudgetMaxx-overzicht (nl/en): groot BudgetMaxx-logo (definitieve groene B + gouden plusje, woord in Fraunces). Inline SVG, kleuren via `.lm`/`.ls`/`--brand`/`.bmp`.
+- `assets/logo-flow.js` (defer) + klein inline script in de head (klasse `lf`): bij scrollen schaalt en schuift het grote logo met transform/opacity (requestAnimationFrame, geen layout) naar het kopbalklogo en vloeit daar over; terugscrollen = omgekeerd. BudgetMaxx-logo glijdt onder de kopbalk door en vloeit over in het Lazy Luna Labs-logo.
+- Telefoon: kopbalk zonder BudgetMaxx-balk (alleen homepage, 2 rijen) is nu sticky; BudgetMaxx-pagina's houden de losse kopbalk en dan geen overgang (groot logo in hero + klein in kopbalk). Zonder JS en bij prefers-reduced-motion: idem.
+- Controle: 1440/390, licht/donker, reduced motion, zonder JS; logo landt pixelexact (28 px op dezelfde plek), scrollWidth = breedte, 0 consolefouten. Screenshots `_check/header-*.png`.

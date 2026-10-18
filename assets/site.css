@@ -127,3 +127,22 @@ button,input,textarea,select{font-family:inherit}
 .values svg{color:var(--brand);margin-bottom:8px}
 @media (max-width:900px){.values{grid-template-columns:1fr 1fr;row-gap:28px}.values>div:nth-child(odd){padding-left:0;border-left:0}}
 @media (max-width:560px){.values{grid-template-columns:1fr;row-gap:0}.values>div{padding:18px 0;border-left:0;border-top:1px solid var(--line)}.values>div:first-child{border-top:0;padding-top:0}}
+
+/* Logo-overgang (Luna, 18 okt): groot logo in de hero vloeit bij scrollen naar het kleine logo in de kopbalk.
+   Maten in em, afgeleid van .logo (svg 28px, gap 8px, tekst 1.2rem = 19.2px), zodat schalen exact op de kopbalk landt.
+   Zonder JS of bij prefers-reduced-motion: gewoon groot logo in de hero en klein logo in de kopbalk. */
+.hero-logo{margin:0 0 clamp(18px,3vw,32px)}
+.big-logo{display:inline-flex;align-items:center;gap:calc(8em/19.2);font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 100,'WONK' 0;font-weight:600;font-size:clamp(2.1rem,7.4vw,4.4rem);line-height:1.6;color:var(--htext);white-space:nowrap;position:relative;z-index:41;pointer-events:none;transform-origin:0 0}
+.big-logo svg{flex:none;width:calc(28em/19.2);height:calc(28em/19.2)}
+.big-logo.bmx{font-size:clamp(2rem,6.6vw,3.6rem)}
+.bmb{fill:var(--brand)}
+.bmp{fill:#d39b2f}
+@media (prefers-color-scheme:dark){.bmp{fill:#f0c46a}}
+.lf .big-logo{will-change:transform,opacity}
+.lf .site-header .logo{opacity:0}
+.site-header .logo:focus-visible{opacity:1!important}
+/* BudgetMaxx-logo glijdt ONDER de kopbalk (met broodkruimelbalk) door en vloeit over in het Lazy Luna Labs-logo */
+.big-logo.bmx{z-index:39}
+/* telefoon: logo glijdt onder de tweerijige kopbalk door (niet over de menurij heen); kopbalk zonder BudgetMaxx-balk is maar twee rijen, die mag vastplakken (dan werkt de logo-overgang ook daar);
+   met BudgetMaxx-balk blijft hij los en staat het logo gewoon groot in de hero en klein in de kopbalk */
+@media (max-width:760px){.site-header:not(:has(.subbar)){position:sticky}.big-logo{z-index:39}.lf .in-budgetmaxx .site-header .logo{opacity:1}}

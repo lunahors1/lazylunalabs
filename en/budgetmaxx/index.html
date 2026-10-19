@@ -4,15 +4,90 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BudgetMaxx: maximum calmness in your wallet</title>
-<meta name="description" content="BudgetMaxx is a free, open-source, offline budgeting app. The English version is coming soon.">
+<meta name="description" content="BudgetMaxx is an offline personal finance app. No account; your data stays on your own computer.">
+<script>document.documentElement.classList.add("js")</script>
 <link rel="alternate" hreflang="nl" href="../../nl/budgetmaxx/index.html">
 <link rel="alternate" hreflang="en" href="index.html">
 <link rel="stylesheet" href="../../assets/site.css">
 <script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("lf")</script>
 <style>
+.shot{aspect-ratio:16/10;border:2px dashed var(--line);border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--muted);background:var(--card);padding:10px}
 #thx{display:none;background:var(--soft);padding:16px;border-radius:10px}
+.hero{display:grid;gap:40px;grid-template-columns:1fr 1.15fr;align-items:center}
+@media (max-width:860px){.hero{grid-template-columns:1fr}}
+.devices{position:relative;padding:0 15% 30px 10px}
+.laptop{background:#1d2a26;border-radius:14px 14px 4px 4px;padding:10px 10px 12px;box-shadow:0 20px 50px rgba(0,0,0,.18)}
+.laptop img{display:block;width:100%;height:auto;border-radius:4px}
+.laptop:after{content:"";display:block;height:12px;margin:12px -10px 0;background:#c9d1cd;border-radius:0 0 14px 14px}
+.phone{position:absolute;right:0;bottom:0;width:20%;background:#1d2a26;border-radius:22px;padding:6px;box-shadow:0 14px 34px rgba(0,0,0,.28)}
+.phone img{display:block;width:100%;height:auto;aspect-ratio:780/1285;object-fit:cover;object-position:top;border-radius:17px}
+@media (max-width:600px){.devices{padding-right:6%}.phone{width:30%;border-radius:16px;padding:4px}.phone img{border-radius:12px}}
+/* probleem */
+.vs{display:grid;gap:16px;grid-template-columns:1fr 1fr;margin-top:18px}
+@media (max-width:720px){.vs{grid-template-columns:1fr}}
+.vs .card{position:relative}
+.vs h3{display:flex;align-items:center;gap:8px}
+.vs ul{list-style:none;margin:10px 0 0;padding:0}
+.vs li{padding:7px 0 7px 30px;position:relative;border-top:1px solid var(--line)}
+.vs li:before{position:absolute;left:0;top:7px;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700}
+.vs .old{border-style:dashed;background:transparent}.vs .old h3{color:var(--muted)}.vs .old li{color:var(--muted)}
+.vs .old li:before{content:"\2715";background:var(--line);color:var(--muted)}
+.vs .new{border:2px solid var(--brand)}.vs .new li:before{content:"\2713";background:var(--brand);color:var(--brand-t)}
+.tag{font-size:.75rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}.new .tag{color:var(--brand)}
+/* tijdlijn */
+.tl{list-style:none;margin:20px 0 0;padding:0 0 0 52px;position:relative;max-width:720px}
+.tl:before{content:"";position:absolute;left:17px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.tl li{position:relative;margin-bottom:24px}
+.tl li:last-child{margin-bottom:0}
+.tl .num{position:absolute;left:-52px;top:0;margin:0}
+.js .tl li{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.js .tl li.in{opacity:1;transform:none}
+.stats{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-top:32px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.stat b{display:block;font-size:1.4rem;line-height:1.2}
+.stat span{color:var(--muted);font-size:.9rem}
+/* scrollytelling */
+.story{margin-top:20px}
+.tabs{display:none}
+.step{padding:8px 0 32px}
+.step .ph{margin:12px 0 0}
+.shotf{margin:0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px}
+.shotf img{display:block;width:100%;height:auto;border-radius:6px}
+.shotf.tel{max-width:240px;margin-top:12px}
+.step .k{font-size:.8rem;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.05em}
+.stage{display:none}
+@media (min-width:960px){
+.js .story{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:48px;align-items:start}
+.js .step{min-height:78vh;display:flex;flex-direction:column;justify-content:center;opacity:.45;transition:opacity .5s ease}
+.js .step.on{opacity:1}
+.js .step .ph{display:none}
+.js .stage{display:block;position:sticky;top:128px;order:2}
+.js .steps{order:1}
+.js .tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.tabs button{font:inherit;font-size:.85rem;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--brand);color:var(--brand-t);border-color:var(--brand)}
+.tabs button:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+.bframe{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.14)}
+.bbar{display:flex;gap:6px;align-items:center;padding:9px 12px;border-bottom:1px solid var(--line);background:var(--soft)}
+.bbar i{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.bbar span{margin-left:8px;font-size:.78rem;color:var(--muted)}
+.bview{position:relative;aspect-ratio:1440/900}
+.bview img{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .7s ease}
+.bview img.on{opacity:1}
+.pframe{position:absolute;right:-14px;bottom:-34px;width:23%;background:#1d2a26;border-radius:22px;padding:5px;box-shadow:0 14px 34px rgba(0,0,0,.3);opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease;pointer-events:none}
+.pframe.on{opacity:1;transform:none}
+.pview{position:relative;aspect-ratio:780/1688;border-radius:17px;overflow:hidden}
+.pview img{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .6s ease}
+.pview img.on{opacity:1}
+.stagewrap{position:relative;padding-bottom:36px}
+}
+@media (prefers-reduced-motion:reduce){
+*,*:before,*:after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+.js .tl li{opacity:1;transform:none}
+}
 .consent{display:flex;gap:10px;align-items:flex-start;font-weight:400;margin:4px 0 14px}
 .consent input{flex:none;width:22px;height:22px;margin-top:2px;accent-color:var(--brand)}
+.consent input:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
 .fine{font-size:.9rem;color:var(--muted)}
 </style>
 <script src="../../assets/sterren.js" defer></script>
@@ -27,46 +102,185 @@
 <div class="w topbar">
 <a class="logo" href="../index.html"><svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><path class="lm" d="M12.6 5.4A11.4 11.4 0 1 0 26.6 20.2A11.8 11.8 0 0 1 12.6 5.4Z"/><path class="ls" d="M19.4 5.4Q20.6 8.8 24.0 10.0Q20.6 11.2 19.4 14.6Q18.2 11.2 14.8 10.0Q18.2 8.8 19.4 5.4Z"/><path class="ls lp" d="M26.0 12.8V16.2M24.3 14.5H27.7"/></svg>Lazy Luna Labs</a>
 <nav class="main-nav" aria-label="Main menu"><a href="../index.html">Home</a><a href="index.html" aria-current="page">BudgetMaxx</a><a href="../index.html#over">About</a><a href="../index.html#contact">Contact</a></nav>
-<span class="lang"><b aria-current="true">EN</b> | <a href="../../nl/budgetmaxx/index.html" hreflang="nl" lang="nl" title="Nederlands">NL</a></span>
+<span class="lang"><a href="../../nl/budgetmaxx/index.html" hreflang="nl" lang="nl" title="Nederlands">NL</a> | <b aria-current="true">EN</b></span>
 </div>
 <div class="subbar"><div class="w subbar-inner">
 <div class="crumb" role="navigation" aria-label="Breadcrumb"><a href="../index.html">Lazy Luna Labs</a><span aria-hidden="true">&rsaquo;</span><strong>BudgetMaxx</strong></div>
-<nav class="sub-nav" aria-label="BudgetMaxx-menu">
+<nav class="sub-nav" aria-label="BudgetMaxx menu">
 <a href="index.html" aria-current="page">Overview</a>
-<a href="../../nl/budgetmaxx/index.html#story" hreflang="nl">Tour (NL)</a>
+<a href="index.html#story">Tour</a>
 <a href="../../nl/budgetmaxx/over.html" hreflang="nl">Made by Luna (NL)</a>
 <a href="privacy.html">Privacy</a>
-<a href="../../nl/budgetmaxx/offline.html" hreflang="nl">Offline proof (NL)</a>
-<a class="sub-cta" href="#beta">Become a beta tester</a>
+<a href="../../nl/budgetmaxx/offline.html" hreflang="nl">Proof it's offline (NL)</a>
+<a class="sub-cta" href="index.html#beta">Become a beta tester</a>
 </nav>
 </div></div>
 </header>
-<main id="main"><section><div class="w">
-<div class="hero-logo" aria-hidden="true"><span class="big-logo bmx"><svg viewBox="0 0 32 32" aria-hidden="true"><path class="bmb" fill-rule="evenodd" d="M8.2 6H13.6C17.2 6 19.6 8.1 19.6 11.3C19.6 13.7 18.2 15.5 16.2 16.3C19.1 17 21.2 19.2 21.2 22.2C21.2 25.7 18.5 28 14.4 28H8.2A3.2 3.2 0 0 1 5 24.8V9.2A3.2 3.2 0 0 1 8.2 6ZM11.2 10.2H12.5A2.3 2.3 0 0 1 12.5 14.8H11.2A1 1 0 0 1 10.2 13.8V11.2A1 1 0 0 1 11.2 10.2ZM11.2 18.6H13.5A2.5 2.5 0 0 1 13.5 23.6H11.2A1 1 0 0 1 10.2 22.6V19.6A1 1 0 0 1 11.2 18.6Z"/><path class="bmp" d="M23.5 6.1A1.5 1.5 0 0 1 26.5 6.1V6.3Q26.5 6.7 26.9 6.7H27.1A1.5 1.5 0 0 1 27.1 9.7H26.9Q26.5 9.7 26.5 10.1V10.3A1.5 1.5 0 0 1 23.5 10.3V10.1Q23.5 9.7 23.1 9.7H22.9A1.5 1.5 0 0 1 22.9 6.7H23.1Q23.5 6.7 23.5 6.3Z"/></svg><span>BudgetMaxx</span></span></div><span class="badge">Coming soon</span>
-<h1>BudgetMaxx is coming in English soon</h1>
-<p class="slogan">Maximum calmness in your wallet.</p>
-<p class="lead muted">BudgetMaxx is a free, open-source budgeting app that turns your income, fixed costs and wishes into a clear plan per pay period. It works fully offline: no account, no cloud, and your data stays on your own computer.</p>
-<p><a class="btn" href="../../nl/budgetmaxx/index.html" hreflang="nl">Read the Dutch version</a></p>
+<main id="main">
+<section class="top"><div class="w hero"><div>
+<div class="hero-logo" aria-hidden="true"><span class="big-logo bmx"><svg viewBox="0 0 32 32" aria-hidden="true"><path class="bmb" fill-rule="evenodd" d="M8.2 6H13.6C17.2 6 19.6 8.1 19.6 11.3C19.6 13.7 18.2 15.5 16.2 16.3C19.1 17 21.2 19.2 21.2 22.2C21.2 25.7 18.5 28 14.4 28H8.2A3.2 3.2 0 0 1 5 24.8V9.2A3.2 3.2 0 0 1 8.2 6ZM11.2 10.2H12.5A2.3 2.3 0 0 1 12.5 14.8H11.2A1 1 0 0 1 10.2 13.8V11.2A1 1 0 0 1 11.2 10.2ZM11.2 18.6H13.5A2.5 2.5 0 0 1 13.5 23.6H11.2A1 1 0 0 1 10.2 22.6V19.6A1 1 0 0 1 11.2 18.6Z"/><path class="bmp" d="M23.5 6.1A1.5 1.5 0 0 1 26.5 6.1V6.3Q26.5 6.7 26.9 6.7H27.1A1.5 1.5 0 0 1 27.1 9.7H26.9Q26.5 9.7 26.5 10.1V10.3A1.5 1.5 0 0 1 23.5 10.3V10.1Q23.5 9.7 23.1 9.7H22.9A1.5 1.5 0 0 1 22.9 6.7H23.1Q23.5 6.7 23.5 6.3Z"/></svg><span>BudgetMaxx</span></span></div><span class="badge">Coming soon: free beta</span>
+<h1>Maximum calmness in your wallet.</h1>
+<p class="muted" style="font-size:1.15rem;max-width:620px">BudgetMaxx turns your income, fixed costs and wishes into a clear plan for every pay period. No account, no cloud: your money stays on your computer.</p>
+<p><a class="btn" href="#beta">Become a beta tester</a></p>
+</div>
+<div class="devices">
+<div class="laptop"><img src="../../nl/budgetmaxx/img/hero-dashboard.png" width="1100" height="520" alt="Part of the BudgetMaxx dashboard for demo profile Max: income, spending, loan and spending money in one overview"></div>
+<div class="phone"><img src="../../nl/budgetmaxx/img/hero-telefoon-jouwdag.png" width="780" height="1285" alt="The Your day pop-up on a phone: what comes in and goes out today"></div>
+</div>
 </div></section>
+
+<section class="alt"><div class="w">
+<h2>The problem</h2>
+<p>Your banking app shows your balance, but not what you can do with it. BudgetMaxx turns it around: a plan up front, instead of tallying afterwards.</p>
+<div class="vs">
+<div class="card old"><span class="tag">Tallying afterwards</span><h3>Looking at what's already gone</h3>
+<ul><li>Your balance, without knowing what you can do with it</li><li>An old spreadsheet nobody understands any more</li><li>Losing time all over again every month</li><li>Many apps want an account or a bank connection</li></ul></div>
+<div class="card new"><span class="tag">Planning ahead</span><h3>Knowing what you can spend</h3>
+<ul><li>Your salary divided over your pay period in advance</li><li>One overview of what still needs to be paid</li><li>A daily budget from your pot</li><li>No account, no cloud, no bank connection</li></ul></div>
+</div>
+</div></section>
+
+<section><div class="w">
+<h2>How it works</h2>
+<ol class="tl" id="tl">
+<li><div class="num" aria-hidden="true">1</div><h3>Set up the foundation</h3><p class="muted">A short wizard: income, fixed costs, savings pots, loans.</p></li>
+<li><div class="num" aria-hidden="true">2</div><h3>Follow your month</h3><p class="muted">The monthly overview follows your pay period. Tick off what has been paid.</p></li>
+<li><div class="num" aria-hidden="true">3</div><h3>Know what you can spend</h3><p class="muted">The Budget coach works out a daily budget from your pot.</p></li>
+</ol>
+<p class="muted" style="margin-top:32px">This is what it looks like for demo profile Max (made-up amounts, from the screenshots below):</p>
+<div class="stats" style="margin-top:12px">
+<div class="stat"><b>&euro;2,900</b><span>income per month</span></div>
+<div class="stat"><b>&euro;46.77</b><span>left today</span></div>
+<div class="stat"><b>&euro;664.83</b><span>October balance</span></div>
+<div class="stat"><b>&euro;7,400</b><span>still owed on the student loan</span></div>
+</div>
+</div></section>
+
+<section class="alt"><div class="w">
+<h2>What's inside</h2>
+<div class="grid">
+<div class="card"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4M8 14l2 2 4-4"/></svg><h3>Monthly overview</h3><p class="muted">Per pay period, with ticking off.</p></div>
+<div class="card"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><h3>Dashboard and year overview</h3><p class="muted">See where your money goes and what the year looks like.</p></div>
+<div class="card"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6M5 10v9M19 10v9M9 10v9M15 10v9M3 21h18"/></svg><h3>Loans and mortgage</h3><p class="muted">Including extra repayments.</p></div>
+<div class="card"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 11a7 6 0 1 0-12.5 3.7L6 19h3l.5-1.5h5L15 19h3l.5-3A6 6 0 0 0 19 11z"/><circle cx="15" cy="10" r=".6"/><path d="M11 6.5h3"/></svg><h3>Savings pots</h3><p class="muted">Set money aside for what's coming.</p></div>
+<div class="card"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><h3>Budget coach</h3><p class="muted">A daily budget from a shrinking pot, with the "Your day" pop-up.</p></div>
+<div class="card"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5-9 5-9-5 9-5zM3 12l9 5 9-5M3 17l9 5 9-5"/></svg><h3>Replacement funds and hours</h3><p class="muted">Handy if you work for yourself.</p></div>
+<div class="card"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 12v6M9 15l3 3 3-3"/></svg><h3>PDF monthly overview</h3><p class="muted">Save or print your month.</p></div>
+<div class="card"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M8 6h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 18.5h.01M12 18.5h.01M16 18.5h.01"/></svg><h3>Calculator</h3><p class="muted">Quickly check a sum without leaving the app.</p></div>
+</div></div></section>
+
+<section><div class="w">
+<h2>Privacy: works without internet</h2>
+<div class="card illu">
+<svg width="120" height="120" viewBox="0 0 120 120" aria-hidden="true" style="flex:none"><circle cx="60" cy="60" r="56" fill="var(--soft)"/><path d="M30 62 60 36l30 26v28H30z" fill="var(--card)" stroke="var(--brand)" stroke-width="3" stroke-linejoin="round"/><path d="M60 54l12 5v9c0 8-5 13-12 16-7-3-12-8-12-16v-9z" fill="var(--brand)"/><path d="M54 68l4 4 8-8" fill="none" stroke="var(--brand-t)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div>
+<p><b>No account. No cloud. No bank connection.</b></p>
+<p class="muted">BudgetMaxx is a single HTML file that runs in your browser, even without internet. Your data is stored locally on your computer and can optionally be encrypted. This page doesn't load anything from outside either.</p>
+<p><b>Your money stays home. So does Max.</b></p>
+<p class="muted">Note: because everything is stored locally, you make your own backups. The app helps you with that.</p>
+</div></div></div></section>
+
+<section class="alt"><div class="w">
+<h2>Honest about AI</h2>
+<div class="illu">
+<svg width="120" height="120" viewBox="0 0 120 120" aria-hidden="true" style="flex:none"><circle cx="60" cy="60" r="56" fill="var(--card)"/><circle cx="46" cy="50" r="12" fill="none" stroke="var(--brand)" stroke-width="3"/><path d="M26 88c2-13 10-20 20-20s18 7 20 20" fill="none" stroke="var(--brand)" stroke-width="3" stroke-linecap="round"/><path d="M82 30l3 8 8 3-8 3-3 8-3-8-8-3 8-3zM90 60l2 4.5 4.5 2-4.5 2-2 4.5-2-4.5-4.5-2 4.5-2z" fill="var(--brand)"/></svg>
+<div>
+<p>BudgetMaxx is built by Luna, with the help of AI agents. We don't hide it.</p>
+<p class="muted">The app itself uses no AI and no internet. Your data goes nowhere.</p>
+</div></div>
+</div></section>
+
+<section class="alt"><div class="w">
+<h2>What it looks like</h2>
+<p class="muted">Screenshots with the fictional demo profile "Max". All amounts are made up. The screenshots show the app in Dutch; the app is also fully available in English. Scroll through the six screens, or click a tab.</p>
+<div class="story" id="story">
+<div class="steps">
+<article class="step on" data-i="0" id="stap1"><span class="k">Step 1 of 6</span><h3>Home / Dashboard</h3><p class="muted">Your whole month at a glance: income (&euro;2,900), spending, the outstanding loan and what you can still spend today, plus a timeline of planned payments.</p><figure class="shotf ph"><img src="../../nl/budgetmaxx/img/dashboard.png" width="1440" height="900" loading="lazy" alt="Dashboard with income, spending, outstanding loan and spending money for demo profile Max"></figure><figure class="shotf ph tel"><img src="../../nl/budgetmaxx/img/telefoon-dashboard.png" width="780" height="1688" loading="lazy" alt="The dashboard on a phone screen"></figure></article>
+<article class="step" data-i="1" id="stap2"><span class="k">Step 2 of 6</span><h3>This month</h3><p class="muted">For each pay period you tick off what has come in and what has been paid. Max can see straight away that &euro;2,235.17 still needs to be in the account for the open items.</p><figure class="shotf ph"><img src="../../nl/budgetmaxx/img/maand.png" width="1440" height="900" loading="lazy" alt="October monthly overview with salary, rent and fixed costs to tick off"></figure></article>
+<article class="step" data-i="2" id="stap3"><span class="k">Step 3 of 6</span><h3>Budget coach</h3><p class="muted">The Budget coach works out a daily budget from your pot: &euro;46.77 left today and &euro;327.42 per 7 days, until the next payday.</p><figure class="shotf ph"><img src="../../nl/budgetmaxx/img/budgetcoach.png" width="1440" height="900" loading="lazy" alt="Budget coach with &euro;46.77 left today and &euro;327.42 per 7 days"></figure></article>
+<article class="step" data-i="3" id="stap4"><span class="k">Step 4 of 6</span><h3>Your day</h3><p class="muted">A pop-up showing what comes in today (&euro;2,900) and what goes out (10 items, &euro;1,766 in total), where you can tick things off straight away.</p><figure class="shotf ph"><img src="../../nl/budgetmaxx/img/jouwdag.png" width="1440" height="900" loading="lazy" alt="Your day pop-up showing what comes in and goes out today"></figure><figure class="shotf ph tel"><img src="../../nl/budgetmaxx/img/telefoon-jouwdag.png" width="780" height="1688" loading="lazy" alt="The Your day pop-up on a phone screen"></figure></article>
+<article class="step" data-i="4" id="stap5"><span class="k">Step 5 of 6</span><h3>Loans</h3><p class="muted">A student loan with &euro;7,400 still owed, 2.5% interest and an expected end date: debt-free in April 2032. With room for extra repayments.</p><figure class="shotf ph"><img src="../../nl/budgetmaxx/img/leningen.png" width="1440" height="900" loading="lazy" alt="Loans page with a student loan of &euro;7,400, debt-free in April 2032"></figure></article>
+<article class="step" data-i="5" id="stap6"><span class="k">Step 6 of 6</span><h3>Year overview</h3><p class="muted">The whole year as a clear table, with every item per month. At the top are buttons for PDF and Excel (CSV).</p><figure class="shotf ph"><img src="../../nl/budgetmaxx/img/jaaroverzicht.png" width="1440" height="900" loading="lazy" alt="Year overview as a spreadsheet with every item per month"></figure></article>
+</div>
+<div class="stage" aria-hidden="false"><div class="stagewrap">
+<div class="tabs" role="tablist" aria-label="Screens"><button type="button" role="tab" aria-selected="true" data-go="0">Home</button><button type="button" role="tab" aria-selected="false" data-go="1">This month</button><button type="button" role="tab" aria-selected="false" data-go="2">Budget coach</button><button type="button" role="tab" aria-selected="false" data-go="3">Your day</button><button type="button" role="tab" aria-selected="false" data-go="4">Loans</button><button type="button" role="tab" aria-selected="false" data-go="5">Year overview</button></div>
+<div class="bframe"><div class="bbar"><i></i><i></i><i></i><span>BudgetMaxx</span></div><div class="bview"><img src="../../nl/budgetmaxx/img/dashboard.png" width="1440" height="900" alt="Dashboard with income, spending, outstanding loan and spending money for demo profile Max" data-s="0" class="on"><img src="../../nl/budgetmaxx/img/maand.png" width="1440" height="900" loading="lazy" alt="October monthly overview with salary, rent and fixed costs to tick off" data-s="1"><img src="../../nl/budgetmaxx/img/budgetcoach.png" width="1440" height="900" loading="lazy" alt="Budget coach with &euro;46.77 left today and &euro;327.42 per 7 days" data-s="2"><img src="../../nl/budgetmaxx/img/jouwdag.png" width="1440" height="900" loading="lazy" alt="Your day pop-up showing what comes in and goes out today" data-s="3"><img src="../../nl/budgetmaxx/img/leningen.png" width="1440" height="900" loading="lazy" alt="Loans page with a student loan of &euro;7,400, debt-free in April 2032" data-s="4"><img src="../../nl/budgetmaxx/img/jaaroverzicht.png" width="1440" height="900" loading="lazy" alt="Year overview as a spreadsheet with every item per month" data-s="5"></div></div>
+<div class="pframe" id="pf"><div class="pview"><img src="../../nl/budgetmaxx/img/telefoon-dashboard.png" width="780" height="1688" loading="lazy" alt="The dashboard on a phone screen" data-s="0" class="on"><img src="../../nl/budgetmaxx/img/telefoon-jouwdag.png" width="780" height="1688" loading="lazy" alt="The Your day pop-up on a phone screen" data-s="3"></div></div>
+</div></div>
+</div>
+</div></section>
+
+<section class="alt"><div class="w">
+<h2>Free and open source</h2>
+<p>BudgetMaxx is free: no subscription, no Pro version and no ads. The code is public, so anyone can take a look.</p>
+<p class="muted">Does Max help you? A donation is welcome, but never required.</p>
+<div class="row">
+<!-- PayPal-link nog invullen -->
+<a class="btn" href="#">Treat Max via PayPal</a>
+<!-- repo-URL nog invullen -->
+<a class="btn btn2" href="#">View the code</a>
+</div>
+</div></section>
+
+<section><div class="w">
+<h2>Frequently asked questions</h2>
+<details><summary>Do I need an account?</summary><p>No. There is no account, and no server your data goes to.</p></details>
+<details><summary>What does it cost?</summary><p>Nothing. BudgetMaxx is free. If you'd like to give something back you can donate, but you don't have to.</p></details>
+<details><summary>Is it open source?</summary><p>Yes. The code is public, so anyone can see what the app does.</p></details>
+<details><summary>Does the app use AI?</summary><p>No. The app was built with the help of AI agents, but the app itself uses no AI and never connects to the internet.</p></details>
+<details><summary>Where does my data go?</summary><p>It stays on your own computer, in your browser. It goes nowhere. You can optionally encrypt it.</p></details>
+<details><summary>Does it work without internet?</summary><p>Yes. It's a single HTML file that works offline.</p></details>
+<details><summary>What if I lose my computer?</summary><p>Make regular backups. Without a backup your data can't be recovered, because we don't have it.</p></details>
+<details><summary>Is there an English version?</summary><p>Yes. You can switch the whole app to English in Settings, including the PDF.</p></details>
+<details><summary>Is this financial advice?</summary><p>No. BudgetMaxx is a calculation aid to help you get an overview.</p></details>
+</div></section>
+
 <section id="beta" class="alt"><div class="w">
 <h2>Become a beta tester</h2>
-<p class="muted">The beta is coming in the next week. Leave your email address and we will get in touch.</p>
-<!-- TODO: sign-up connection still to be chosen (form tool or email). This form currently sends NOTHING. -->
+<p class="muted">The beta is coming this week. Leave your email address and we'll be in touch.</p>
+<!-- TODO: koppeling voor aanmeldingen nog te kiezen (formulier-tool of e-mail). Dit formulier verstuurt nu NIETS. -->
 <form id="f">
 <label for="n">First name</label><input id="n" type="text" autocomplete="given-name">
 <label for="e">Email address</label><input id="e" type="email" required autocomplete="email">
-<label class="consent" for="c"><input id="c" type="checkbox" required><span>I consent to my first name and email address being used for the beta. Read the <a href="privacy.html">privacy statement</a>.</span></label>
+<label class="consent" for="c"><input id="c" type="checkbox" required><span>I agree to my first name and email address being used for the beta. Read the <a href="privacy.html">privacy statement</a>.</span></label>
 <p class="fine">Email addresses are deleted 3 months after launch. The app itself never sends anything.</p>
 <button class="btn" type="submit">Sign up</button>
 </form>
 <p id="thx" role="status">Thank you! This is a prototype: nothing has been sent yet.</p>
-</div></section></main>
+</div></section>
+</main>
 <footer class="site-footer"><div class="w">
 <div>Lazy Luna Labs · KvK 89453980 · <a href="mailto:hello@lazylunalabs.com">hello@lazylunalabs.com</a> · <a href="privacy.html">Privacy</a></div>
-<div class="footer-sub">BudgetMaxx is a product of Lazy Luna Labs · open-source under GPL-3.0</div>
+<div class="footer-sub">BudgetMaxx is a product of Lazy Luna Labs · open source under GPL-3.0</div>
 </div></footer>
 <script>
 document.getElementById('f').addEventListener('submit',function(ev){ev.preventDefault();this.style.display='none';document.getElementById('thx').style.display='block';});
+(function(){
+var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+var steps=[].slice.call(document.querySelectorAll('.step'));
+var tabs=[].slice.call(document.querySelectorAll('.tabs button'));
+var sImgs=[].slice.call(document.querySelectorAll('.stage [data-s]'));
+var pf=document.getElementById('pf');
+function show(i){
+ steps.forEach(function(e,k){e.classList.toggle('on',k===i)});
+ tabs.forEach(function(b,k){b.setAttribute('aria-selected',k===i?'true':'false')});
+ var hasP=false;
+ sImgs.forEach(function(im){var on=+im.getAttribute('data-s')===i;im.classList.toggle('on',on);if(on&&im.closest('.pview'))hasP=true});
+ if(pf)pf.classList.toggle('on',hasP);
+}
+tabs.forEach(function(b){b.addEventListener('click',function(){
+ var i=+b.getAttribute('data-go');show(i);
+ steps[i].scrollIntoView({behavior:rm?'auto':'smooth',block:'center'});
+})});
+if('IntersectionObserver' in window){
+ var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)show(steps.indexOf(e.target))})},{rootMargin:'-45% 0px -45% 0px'});
+ steps.forEach(function(e){io.observe(e)});
+ var tl=document.querySelectorAll('.tl li');
+ var io2=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io2.unobserve(e.target)}})},{threshold:.3});
+ [].forEach.call(tl,function(e){io2.observe(e)});
+}else{[].forEach.call(document.querySelectorAll('.tl li'),function(e){e.classList.add('in')})}
+show(0);
+})();
 </script>
 </body>
 </html>

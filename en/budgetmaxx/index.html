@@ -12,7 +12,6 @@
 <script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("lf")</script>
 <style>
 .shot{aspect-ratio:16/10;border:2px dashed var(--line);border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--muted);background:var(--card);padding:10px}
-#thx{display:none;background:var(--soft);padding:16px;border-radius:10px}
 .hero{display:grid;gap:40px;grid-template-columns:1fr 1.15fr;align-items:center}
 @media (max-width:860px){.hero{grid-template-columns:1fr}}
 .devices{position:relative;padding:0 15% 30px 10px}
@@ -237,16 +236,9 @@
 
 <section id="beta" class="alt"><div class="w">
 <h2>Become a beta tester</h2>
-<p class="muted">The beta is coming this week. Leave your email address and we'll be in touch.</p>
-<!-- TODO: koppeling voor aanmeldingen nog te kiezen (formulier-tool of e-mail). Dit formulier verstuurt nu NIETS. -->
-<form id="f">
-<label for="n">First name</label><input id="n" type="text" autocomplete="given-name">
-<label for="e">Email address</label><input id="e" type="email" required autocomplete="email">
-<label class="consent" for="c"><input id="c" type="checkbox" required><span>I agree to my first name and email address being used for the beta. Read the <a href="privacy.html">privacy statement</a>.</span></label>
-<p class="fine">Email addresses are deleted 3 months after launch. The app itself never sends anything.</p>
-<button class="btn" type="submit">Sign up</button>
-</form>
-<p id="thx" role="status">Thank you! This is a prototype: nothing has been sent yet.</p>
+<p class="muted">The beta is open: anyone can join. Sign up and you will get an email straight away explaining what the beta is, where to download it, the quick-start guide and how to report a bug.</p>
+<p><a class="btn" href="#TODO-google-form-en">Sign up for the beta</a></p>
+<p class="fine">Sign-up runs through Google Forms. Please read the <a href="privacy.html">privacy statement</a> first. The app itself never sends anything.</p>
 </div></section>
 </main>
 <footer class="site-footer"><div class="w">
@@ -254,7 +246,6 @@
 <div class="footer-sub">BudgetMaxx is a product of Lazy Luna Labs · open source under GPL-3.0</div>
 </div></footer>
 <script>
-document.getElementById('f').addEventListener('submit',function(ev){ev.preventDefault();this.style.display='none';document.getElementById('thx').style.display='block';});
 (function(){
 var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
 var steps=[].slice.call(document.querySelectorAll('.step'));
